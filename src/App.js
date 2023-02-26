@@ -66,6 +66,7 @@ function App() {
   },[]);
 
   //filtering products
+  //...
   const filteredProducts = selectedCategory
   ? products.filter((p) => p.category === selectedCategory)
   : products;
