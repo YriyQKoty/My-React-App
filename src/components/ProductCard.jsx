@@ -1,16 +1,36 @@
-import React from 'react';
-import './ProductList.css'
+import React, { useState } from 'react';
+import './ProductList.css';
 
-const ProductCard = (props) => {
+const ProductCard = ({ product, onAddToCart,onRemoveCart }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  function handleCheckChange() {
+    if (!isChecked) {
+      onAddToCart(product);
+    }
+    else {
+      onRemoveCart(product);
+    }
+    setIsChecked(!isChecked);
+  }
+
   return (
     <div className="product-card">
-      <img src={props.image} alt={props.title} />
-      <h2>{props.title}</h2>
-      <p>{props.description}</p>
-      <span>{props.price}</span>
-      <button>Add to Cart</button>
+      <h4>{product.category}</h4> 
+      <img src={product.image} alt={product.title} />
+      <h2>{product.title} </h2> 
+      <p>{product.description}</p>
+      <p>{product.price}</p>
+      <label>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckChange}
+        />
+        Add to Cart
+      </label>
     </div>
   );
-};
+}
 
 export default ProductCard;

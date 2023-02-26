@@ -4,7 +4,7 @@ import './Footer.css'
 function Footer() {
   return (
     <footer className="footer">
-      <p>&copy; 2023 is a year to Bomb DOnetsk.</p>
+      <p>&copy; 2023 All rights reserved.</p>
     </footer>
   );
 }

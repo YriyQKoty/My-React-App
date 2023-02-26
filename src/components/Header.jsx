@@ -1,11 +1,25 @@
 
 import React from 'react'
 import './Header.css';
+import CategorySelector from './CategorySelector';
 
-function Header() {
+function Header({ cartItemsCount, categories, onCategoryChange, totalCount }) {
+
   return (
-    <header className='Header'>
-      <h1>HELLO BIDEN</h1>
+    <header >
+      <nav className="header">
+        <div className="header_logo">Weaponry shop</div>
+          <CategorySelector
+              categories={categories}
+              onChange={onCategoryChange}
+              totalCount={totalCount}
+          />
+        <div className="header_cart">
+          <button className="header_cart-button">
+              Cart ({cartItemsCount})
+          </button>
+        </div>
+      </nav>
     </header>
   )
 }

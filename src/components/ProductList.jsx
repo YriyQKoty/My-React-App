@@ -4,17 +4,21 @@ import './ProductList.css'
 
 class ProductList extends Component {
   render() {
-    const { products } = this.props;
+    const { products, onAddToCart, onRemoveCart, selectedCategory } = this.props;
+
+    const filteredProducts = selectedCategory
+    ? products.filter((p) => p.category === selectedCategory)
+    : products;
+
 
     return (
       <div className="product-list">
-        {products.map((product) => (
-          <ProductCard 
-            key={product.id} 
-            image={product.image} 
-            title={product.title} 
-            description={product.description} 
-            price={product.price} 
+        {filteredProducts.map((product) =>  (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={onAddToCart}
+            onRemoveCart={onRemoveCart}
           />
         ))}
       </div>
