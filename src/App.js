@@ -4,7 +4,7 @@ import './components/ProductList.css'
 import Header from './components/Header';
 import ProductList from './components/ProductList';
 import Footer from './components/Footer';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const categories = [
   'Tank',
@@ -13,7 +13,6 @@ const categories = [
   'APC & IFV',
   'Other'
 ];
-
 
 const products = [
   {
@@ -58,10 +57,19 @@ const products = [
   }, 
 ];
 
-
 function App() {
-  let [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [cartItems, setCartItems] = useState([]);
+
+  useEffect(()=>{ //using effect to apply default value for category
+    setSelectedCategory(""); //setting default state for selected category
+  },[]);
+
+  //filtering products
+  const filteredProducts = selectedCategory
+  ? products.filter((p) => p.category === selectedCategory)
+  : products;
+
 
   function handleAddToCart(product) {
     setCartItems([...cartItems, product]);
@@ -81,7 +89,6 @@ function App() {
   }
 
   function handleCategoryChange(category) {
-    //selectedCategory = category;
     setSelectedCategory(category);
   }
 
@@ -91,11 +98,12 @@ function App() {
           cartItemsCount={cartItems.length} 
           categories={categories} 
           onCategoryChange={handleCategoryChange} 
-          totalCount="0"
+          totalCount={filteredProducts.length}
       />
+        
       <main  className="main-content">
           <ProductList 
-              products={products} 
+              products={filteredProducts} 
               onAddToCart={handleAddToCart} 
               onRemoveCart={handleRemoveCart} 
               selectedCategory={selectedCategory}

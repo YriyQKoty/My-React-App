@@ -2,6 +2,7 @@
 import React from 'react'
 import './Header.css';
 import CategorySelector from './CategorySelector';
+import AuthButton from './AuthButton';
 
 function Header({ cartItemsCount, categories, onCategoryChange, totalCount }) {
 
@@ -14,11 +15,11 @@ function Header({ cartItemsCount, categories, onCategoryChange, totalCount }) {
               onChange={onCategoryChange}
               totalCount={totalCount}
           />
-        <div className="header_cart">
+          
           <button className="header_cart-button">
               Cart ({cartItemsCount})
           </button>
-        </div>
+         <AuthButton/>
       </nav>
     </header>
   )

@@ -14,7 +14,7 @@ function CategorySelector({ categories, onChange, totalCount }) {
          
         ))}
       </select>
-      <div> Count in category: {totalCount}
+      <div> Count: {totalCount}
 
       </div>
     </div>
