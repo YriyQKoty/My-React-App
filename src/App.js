@@ -5,6 +5,9 @@ import Header from './components/Header';
 import ProductList from './components/ProductList';
 import Footer from './components/Footer';
 import React, { useState, useEffect } from 'react';
+import ReactDOM from "react-dom/client";
+import ProductDetails from './components/ProductDetails';
+import { BrowserRouter, Routes, Route, Switch } from 'react-router-dom'
 
 const categories = [
   'Tank',
@@ -14,6 +17,7 @@ const categories = [
   'Other'
 ];
 
+
 const products = [
   {
     id: 1,
@@ -21,7 +25,7 @@ const products = [
     title: 'GMRLS',
     category: categories[Math.floor(Math.random() * categories.length)],
     description: 'Goooood morning VIETNAAAM.',
-    price: '$9.99'
+    price: 9.99
   },
   {
     id: 2,
@@ -29,7 +33,7 @@ const products = [
     title: 'M1 Abrams',
     category: categories[Math.floor(Math.random() * categories.length)],
     description: 'I ain`t a senator son, no',
-    price: '$19.99'
+    price: 19.99
   },
   {
     id: 3,
@@ -37,7 +41,7 @@ const products = [
     title: 'HIMARS',
     category: categories[Math.floor(Math.random() * categories.length)],
     description: 'I love the smell of napalm in the morning.',
-    price: '$29.99'
+    price: 29.99
   },
   {
     id: 4,
@@ -45,7 +49,7 @@ const products = [
     title: 'M113',
     category: categories[Math.floor(Math.random() * categories.length)],
     description: 'Who called democracy??',
-    price: '$39.99'
+    price: 39.99
   },
   {
     id: 5,
@@ -53,23 +57,24 @@ const products = [
     title: 'HIMARS',
     category: categories[Math.floor(Math.random() * categories.length)],
     description: 'I love the smell of napalm in the morning.',
-    price: '$29.99'
-  }, 
+    price: 29.99
+  },
 ];
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [cartItems, setCartItems] = useState([]);
+  const [selectedCurrency, setCurrency] = useState('USD');
 
-  useEffect(()=>{ //using effect to apply default value for category
+  useEffect(() => { //using effect to apply default value for category
     setSelectedCategory(""); //setting default state for selected category
-  },[]);
+  }, []);
 
   //filtering products
   //...
   const filteredProducts = selectedCategory
-  ? products.filter((p) => p.category === selectedCategory)
-  : products;
+    ? products.filter((p) => p.category === selectedCategory)
+    : products;
 
 
   function handleAddToCart(product) {
@@ -79,13 +84,13 @@ function App() {
   function handleRemoveCart(product) {
     const prodIndex = cartItems.findIndex(p => p.id === product.id);
     if (prodIndex === -1) {
-        return;
+      return;
     }
 
     const newCartItems = cartItems.slice();
 
     newCartItems.splice(prodIndex, 1);
-    
+
     setCartItems(newCartItems);
   }
 
@@ -93,25 +98,44 @@ function App() {
     setSelectedCategory(category);
   }
 
+  function handleCurrencyChange(currency) {
+    setCurrency(currency);
+  }
+
   return (
-    <div className="App">
-      <Header 
-          cartItemsCount={cartItems.length} 
-          categories={categories} 
-          onCategoryChange={handleCategoryChange} 
-          totalCount={filteredProducts.length}
+    <BrowserRouter>
+      <Header
+        cartItemsCount={cartItems.length}
+        categories={categories}
+        onCategoryChange={handleCategoryChange}
+        onCurrencyChange={handleCurrencyChange}
+        totalCount={filteredProducts.length}
       />
-        
-      <main  className="main-content">
-          <ProductList 
-              products={filteredProducts} 
-              onAddToCart={handleAddToCart} 
-              onRemoveCart={handleRemoveCart} 
-              selectedCategory={selectedCategory}
+     
+      <Routes>
+        <Route path="/" element={
+          <ProductList
+            products={filteredProducts}
+            onAddToCart={handleAddToCart}
+            onRemoveCart={handleRemoveCart}
+            selectedCategory={selectedCategory}
+            currency = {selectedCurrency}
           />
-      </main>
-      <Footer/>
-  </div>
+        }>
+        </Route>
+
+        <Route path='/products/:productId' element={
+          <ProductDetails
+          products = {products}/>
+        }>
+        </Route>
+
+      </Routes>
+
+      <Footer />
+
+
+    </BrowserRouter>
   );
 }
 
