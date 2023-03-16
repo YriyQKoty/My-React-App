@@ -4,10 +4,15 @@ import './components/ProductList.css'
 import Header from './components/Header';
 import ProductList from './components/ProductList';
 import Footer from './components/Footer';
-import React, { useState, useEffect } from 'react';
-import ReactDOM from "react-dom/client";
+import React, { useState, useContext } from 'react';
 import ProductDetails from './components/ProductDetails';
-import { BrowserRouter, Routes, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { CategoriesContext, CategoriesProvider } from './contexts/CategoriesContext';
+import { CurrencyContext, CurrencyContextProvider } from './contexts/CurrencyContext';
+import { ProductListProvider } from './contexts/ProductContext';
+import VisitHistoryContextProvider from './contexts/VisitHistory';
+import Debug from './components/Debug';
+
 
 const categories = [
   'Tank',
@@ -62,71 +67,44 @@ const products = [
 ];
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [cartItems, setCartItems] = useState([]);
-  const [selectedCurrency, setCurrency] = useState('USD');
+  const { selectedCategory } = useContext(CategoriesContext)
+  const { selectedCurrency, convertCurrency } = useContext(CurrencyContext);
 
-  useEffect(() => { //using effect to apply default value for category
-    setSelectedCategory(""); //setting default state for selected category
-  }, []);
 
-  //filtering products
-  //...
   const filteredProducts = selectedCategory
     ? products.filter((p) => p.category === selectedCategory)
     : products;
 
+  const convertedProducts = filteredProducts.map((product) => ({
+    ...product,
+    price: convertCurrency(product.price, selectedCurrency),
+  }));
 
-  function handleAddToCart(product) {
-    setCartItems([...cartItems, product]);
-  }
-
-  function handleRemoveCart(product) {
-    const prodIndex = cartItems.findIndex(p => p.id === product.id);
-    if (prodIndex === -1) {
-      return;
-    }
-
-    const newCartItems = cartItems.slice();
-
-    newCartItems.splice(prodIndex, 1);
-
-    setCartItems(newCartItems);
-  }
-
-  function handleCategoryChange(category) {
-    setSelectedCategory(category);
-  }
-
-  function handleCurrencyChange(currency) {
-    setCurrency(currency);
-  }
 
   return (
     <BrowserRouter>
       <Header
-        cartItemsCount={cartItems.length}
-        categories={categories}
-        onCategoryChange={handleCategoryChange}
-        onCurrencyChange={handleCurrencyChange}
         totalCount={filteredProducts.length}
       />
-     
       <Routes>
         <Route path="/" element={
+
           <ProductList
-            products={filteredProducts}
-            onAddToCart={handleAddToCart}
-            onRemoveCart={handleRemoveCart}
-            selectedCategory={selectedCategory}
-            currency = {selectedCurrency}
+            products={convertedProducts}
           />
         }>
         </Route>
 
         <Route path='/products/:productId' element={
           <ProductDetails
-          products = {products}/>
+            products={convertedProducts} />
+        }>
+        </Route>
+
+        <Route path='/debug' element={
+          <VisitHistoryContextProvider>
+            <Debug />
+          </VisitHistoryContextProvider>
         }>
         </Route>
 

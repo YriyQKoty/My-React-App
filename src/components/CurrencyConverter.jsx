@@ -1,26 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { CurrencyContext } from '../contexts/CurrencyContext';
 
-const CurrencyConverter = ({ selectedCurrency, onCurrencyChange }) => {
-    const convertCurrency = (price, currency) => {
-      const exchangeRates = {
-        USD: 1,
-        UAH: 36.55,
-        EUR: 0.85
-      };
-  
-      const convertedPrice = price * exchangeRates[currency];
-  
-      return convertedPrice.toFixed(2);
-    };
-  
-    const handleCurrencyChange = (event) => {
-      const currency = event.target.value;
-      onCurrencyChange(currency);
-    };
+const CurrencyConverter = () => {
+
+    const {onCurrencyChange} = useContext(CurrencyContext)
   
     return (
       <div>
-        <select value={selectedCurrency} onChange={handleCurrencyChange}>
+        <select onChange={(e) => {onCurrencyChange(e.target.value)}}>
           <option value="USD">USD</option>
           <option value="UAH">UAH</option>
           <option value="EUR">EUR</option>

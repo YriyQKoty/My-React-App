@@ -1,50 +1,31 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import ProductCard from './ProductCard';
-import './ProductList.css'
+import './ProductList.css';
+import { CurrencyContext } from '../contexts/CurrencyContext';
 
-class ProductList extends Component {
-  
-  render() {
-    const { products, onAddToCart, onRemoveCart, currency } = this.props;
+const ProductList = ({ products }) => {
+  const {selectedCurrency,convertCurrency} = useContext(CurrencyContext);
 
-    const convertCurrency = (price, currency) => {
-      const exchangeRates = {
-        USD: 1,
-        UAH: 36.55,
-        EUR: 0.85
-      };
-  
-      const convertedPrice = price * exchangeRates[currency];
-  
-      return convertedPrice.toFixed(2);
-    };
-    const convertedProducts = products.map((product) => ({
-      ...product,
-      price: convertCurrency(product.price, currency),
-    }));
-  
-   
+  const convertedProducts = products.map((product) => ({
+    ...product,
+    price: selectedCurrency ? product.price : convertCurrency(product.price, selectedCurrency),
+  }));
 
-    return (
 
-      <div className="App">
-        <main className="main-content">
-          
-          <div className="product-list">
-            {convertedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-                onRemoveCart={onRemoveCart}
-                currency = {currency}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      <main className="main-content">
+        <div className="product-list">
+          {convertedProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+};
 
 export default ProductList;

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CurrencyContext } from '../contexts/CurrencyContext';
+import { ProductListContext } from '../contexts/ProductContext';
 import './ProductList.css';
 
-const ProductCard = ({ product, onAddToCart,onRemoveCart, currency }) => {
+const ProductCard = ({ product }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const {onAddToCart, onRemoveCart} = useContext(ProductListContext)
+  const {selectedCurrency} = useContext(CurrencyContext)
 
   function handleCheckChange() {
     if (!isChecked) {
@@ -21,7 +25,7 @@ const ProductCard = ({ product, onAddToCart,onRemoveCart, currency }) => {
       <img src={product.image} alt={product.title} />
       <h2>{product.title} </h2> 
       <p>{product.description}</p>
-      <p>{product.price} {currency}</p>
+      <p>{product.price} {selectedCurrency}</p>
       <label>
         <input
           type="checkbox"
