@@ -8,9 +8,9 @@ import ProductDetails from './components/ProductDetails';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { CategoriesContext, CategoriesProvider } from './contexts/CategoriesContext';
 import { CurrencyContext, CurrencyContextProvider } from './contexts/CurrencyContext';
-import { ProductListProvider } from './contexts/ProductContext';
 import VisitHistoryContextProvider from './contexts/VisitHistory';
 import Debug from './components/Debug';
+import AdminPanel from './admin/AdminPanel';
 
 
 const categories = [
@@ -105,6 +105,11 @@ function App() {
             <Debug />
           </VisitHistoryContextProvider>
         }>
+        </Route>
+        <Route path='/admin' element=
+          {<AdminPanel categories = {categories} />}
+        >
+
         </Route>
 
       </Routes>
