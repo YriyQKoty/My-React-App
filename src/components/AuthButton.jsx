@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import './Header.css';
+import { AuthButtonStyled } from './Styles';
 
 const AuthButton = () => {
 
     const [isAuth, setAuth] = useState(false);
 
     return (
-        <button className="auth-button" onClick={() => setAuth(!isAuth)}>
+        <AuthButtonStyled backgroundColor="#4CAF50" hoverColor="#2E8B57" onClick={() => setAuth(!isAuth)}>
             {isAuth ? 'Log out' : 'Log in'}
-        </button>
+        </AuthButtonStyled>
     )
 };
 export default AuthButton;

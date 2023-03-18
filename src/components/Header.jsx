@@ -1,26 +1,32 @@
 
-import './Header.css';
 import CategorySelector from './CategorySelector';
 import AuthButton from './AuthButton';
 import React, { useState, useContext } from 'react';
 import CurrencyConverter from './CurrencyConverter';
 import { ProductListContext } from '../contexts/ProductContext';
+import styles from './Header.module.css'
+import { CartButton, Logo } from './Styles';
+import Dialog from './Dialog';
 
 function Header({ totalCount }) {
   const { cartItemsCount } = useContext(ProductListContext)
+
   return (
-    <header >
-      <nav className="header">
-        <div className="header_logo">Weaponry shop</div>
+    <header className={`${styles.header_container}`}>
+      <nav className={`${styles.header_container__header}`}>
+        <Logo>Weaponry shop</Logo>
+    
+        <Dialog />
         <CategorySelector
           totalCount={totalCount}
         />
 
         <CurrencyConverter />
 
-        <button className="header_cart-button">
+        <CartButton>
           Cart ({cartItemsCount})
-        </button>
+        </CartButton>
+
         <AuthButton />
       </nav>
     </header>

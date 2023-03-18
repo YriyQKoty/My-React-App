@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CurrencyContext } from '../contexts/CurrencyContext';
 import { ProductListContext } from '../contexts/ProductContext';
-import './ProductList.css';
+import styles from './ProductList.module.css';
 
 const ProductCard = ({ product }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
   }
 
   return (
-    <div className="product-card">
+    <div className={styles.product_card}>
       <h4>{product.category}</h4> 
       <img src={product.image} alt={product.title} />
       <h2>{product.title} </h2> 
