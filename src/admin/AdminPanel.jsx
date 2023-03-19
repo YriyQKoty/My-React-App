@@ -5,11 +5,15 @@ import { TableOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import Modal from 'react-modal';
 import * as Yup from "yup";
 
+import { addProduct } from '../actions/productActions';
+import { useDispatch } from 'react-redux';
+
 export default function AdminPanel() {
     const [products, setProducts] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [viewType, setViewType] = useState('table');
 
+    const dispatch = useDispatch();
     //const [form] = Form.useForm();
 
     const validationSchema = {
@@ -114,6 +118,14 @@ export default function AdminPanel() {
                             };
                             setProducts([...products, product]);
                             setSubmitting(false);
+                            dispatch({
+                                type: 'ADD_PRODUCT',
+                                payload: {
+                                  title: product.name,
+                                  description: product.description,
+                                  price: product.price,
+                                },
+                              });
                             handleCancel()
                         }, 400);
                     }}
@@ -145,7 +157,7 @@ export default function AdminPanel() {
                             <Field name="category">
                                 {({ field }) => (
                                     <AntForm.Item label="Category">
-                                        <Select {...field} placeholder="Select category">
+                                        <Select placeholder="Select category">
                                             {categories.map(c => (
                                                 <Select.Option key={c}>{c}</Select.Option>
                                             ))}
