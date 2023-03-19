@@ -66,7 +66,7 @@ export default function AdminPanel() {
 
 
     return (
-        <div style={{ marginTop: '5rem' }}>
+        <div style={{ marginTop: '10rem' }}>
             <div style={{ marginBottom: '1rem' }}>
                 <Button onClick={() => setModalVisible(true)}>Create Product</Button>
                 <Button
