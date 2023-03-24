@@ -36,8 +36,8 @@ const initialState = {
     }
   };
 
-  //const store = configureStore({reducer: userReducer}, applyMiddleware(thunk))
+  const store = configureStore({reducer: userReducer}, applyMiddleware(thunk))
 
-  //store.dispatch(fetchUsers());
+  store.dispatch(fetchUsers());
   
   export default userReducer;
