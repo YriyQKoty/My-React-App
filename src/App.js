@@ -12,8 +12,13 @@ import VisitHistoryContextProvider from './contexts/VisitHistory';
 import Debug from './components/Debug';
 import AdminPanel from './admin/AdminPanel';
 
-import {selectProducts, categories} from './reducers/productReducer';
+import { selectProducts, categories } from './reducers/productReducer';
 import { useSelector } from 'react-redux';
+import { useGetUserByIdQuery } from './api/test';
+import { useGetUsersQuery } from './api/test';
+
+import { UsersComponent } from './api/usersComponent';
+import { UserComponent } from './api/userComponent';
 
 
 function App() {
@@ -59,10 +64,19 @@ function App() {
         }>
         </Route>
         <Route path='/admin' element=
-          {<AdminPanel categories = {categories} />}
+          {<AdminPanel categories={categories} />}
         >
 
         </Route>
+        <Route path='/user/:id' element=
+          {<UserComponent />
+          }
+        >
+        </Route>
+        <Route path='/users' element=
+             {<UsersComponent />
+            }
+          ></Route>
 
       </Routes>
 
