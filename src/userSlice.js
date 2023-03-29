@@ -1,10 +1,28 @@
-import { createSlice, createAsyncThunk, configureStore } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await axios.get("https://jsonplaceholder.typicode.com/users");
-  return response.data;
-});
+import { call, put, takeLatest } from 'redux-saga/effects';
+
+export function* fetchUsers() {
+  try {
+    const response = yield call(axios.get, "https://jsonplaceholder.typicode.com/users");
+    yield put(fetchUserDataSuccess(response.data));
+    console.log("saga response")
+    console.log(response.data)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchFetchUserData() {
+  yield takeLatest('users/fetchUsers', fetchUsers);
+}
+
+// export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+//   const response = await axios.get("https://jsonplaceholder.typicode.com/users");
+//   return response.data;
+// });
+
 
 const userSlice = createSlice({
   name: "users",
@@ -13,21 +31,13 @@ const userSlice = createSlice({
     users: [],
     error: "",
   },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUsers.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.loading = false;
-        state.users = action.payload;
-      })
-      .addCase(fetchUsers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      });
+  reducers: {
+    fetchUserDataSuccess: (state, action) => {
+      state.data = action.payload;
+    },
   },
 });
+
+export const { fetchUserDataSuccess } = userSlice.actions;
 
 export default userSlice.reducer;
